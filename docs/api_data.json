@@ -1,0 +1,394 @@
+[
+  {
+    "type": "delete",
+    "url": "/api/v1/user/images/:fileName",
+    "title": "Delete Image",
+    "name": "DeleteImage",
+    "group": "Image",
+    "description": "<p>Deletes an uploaded image from local storage using the provided file name. Returns success message if deletion is completed.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "fileName",
+            "description": "<p>Uploaded image file name</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Indicates deletion status</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404": [
+          {
+            "group": "404",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "404",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Image not found</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/v1/user/images/1706602332123-123456789.png"
+      }
+    ],
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "{\n  \"success\": true,\n  \"message\": \"Image deleted successfully\"\n}",
+        "type": "json"
+      },
+      {
+        "title": "Error-Response:",
+        "content": "{\n  \"success\": false,\n  \"message\": \"Image not found\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/Core/Api/CommonController/ImageController.js",
+    "groupTitle": "Image"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/user/images/:fileName",
+    "title": "Get Image by File Name",
+    "name": "GetImageByFileName",
+    "group": "Image",
+    "description": "<p>Fetches an uploaded image from local storage using the provided file name. Returns the image file directly if it exists.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "fileName",
+            "description": "<p>Uploaded image file name</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "File",
+            "optional": false,
+            "field": "image",
+            "description": "<p>Image file stream (jpg/jpeg/png/webp)</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404": [
+          {
+            "group": "404",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "404",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Image not found</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/v1/user/images/1706602332123-123456789.png"
+      }
+    ],
+    "examples": [
+      {
+        "title": "Error-Response:",
+        "content": "{\n  \"success\": false,\n  \"message\": \"Image not found\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/Core/Api/CommonController/ImageController.js",
+    "groupTitle": "Image"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/user/upload-file",
+    "title": "Upload Profile Image",
+    "name": "UploadProfileImage",
+    "group": "Image",
+    "description": "<p>Uploads a single profile image to local storage using multipart/form-data. The image is saved with a dynamically generated filename. Only image files are allowed.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>multipart/form-data</p>"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "group": "Body",
+        "type": "File",
+        "optional": false,
+        "field": "profileImage",
+        "description": "<p>Profile image file (required, image only, max 2MB)</p>"
+      }
+    ],
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Indicates upload status</p>"
+          },
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "201",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Uploaded image info</p>"
+          },
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "data.fileName",
+            "description": "<p>Generated file name</p>"
+          },
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "data.path",
+            "description": "<p>Relative file path</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>false</p>"
+          },
+          {
+            "group": "400",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message (invalid file / missing file)</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/v1/user/upload-file"
+      }
+    ],
+    "examples": [
+      {
+        "title": "Success-Response:",
+        "content": "{\n  \"success\": true,\n  \"message\": \"Image uploaded successfully\",\n  \"data\": {\n    \"fileName\": \"1706602332123-123456789.png\",\n    \"path\": \"/uploads/images/1706602332123-123456789.png\"\n  }\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/Core/Api/CommonController/ImageController.js",
+    "groupTitle": "Image"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/user/register",
+    "title": "Register a new user",
+    "name": "RegisterUser",
+    "group": "User",
+    "description": "<p>Registers a new user with the provided details. Mandatory fields are strictly required. Optional fields are validated only if provided.</p>",
+    "body": [
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": false,
+        "field": "mobileNumber",
+        "description": "<p>User's mobile number (required, must match /^[6-9]\\d{9}$/)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": false,
+        "field": "fullName",
+        "description": "<p>User's full name (required)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "address",
+        "description": "<p>User's address (optional, must not be empty if provided)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "dob",
+        "description": "<p>User's date of birth (optional, format: YYYY-MM-DD)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "allowedValues": [
+          "\"male\"",
+          "\"female\"",
+          "\"others\""
+        ],
+        "optional": true,
+        "field": "gender",
+        "description": "<p>User's gender (optional, must be one of allowed values)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "size": "12",
+        "optional": true,
+        "field": "aadharNumber",
+        "description": "<p>User's 12-digit Aadhar number (optional, must match /^\\d{12}$/)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "File",
+        "optional": true,
+        "field": "profileImage",
+        "description": "<p>User profile image (optional, jpg/png/jpeg)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "panNumber",
+        "description": "<p>User's PAN number (optional, must match /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)</p>"
+      }
+    ],
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Indicates if the registration was successful</p>"
+          },
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "201",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Registered user data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "type": "Object",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>Validation failed for one or more fields</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "type": "Object",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Unexpected server error</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "/api/v1/user/register"
+      }
+    ],
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "{\n  \"mobileNumber\": \"9876543210\",\n  \"fullName\": \"Arun Prakash\",\n  \"address\": \"123, Main Street, Chennai\",\n  \"dob\": \"1990-05-15\",\n  \"gender\": \"male\",\n  \"aadharNumber\": \"123456789012\",\n  \"panNumber\": \"ABCDE1234F\"\n}",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "src/Core/Api/UserController/UserController.js",
+    "groupTitle": "User"
+  }
+]

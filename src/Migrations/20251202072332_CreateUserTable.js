@@ -4,7 +4,7 @@
  */
 
 const tableName = 'tbl_user';
-const { userRoles } = require('../Utils/Settings');
+const { userRoles, gender } = require('../Utils/Settings');
 
 exports.up = function (knex) {
   return knex.schema.createTable(tableName, (table) => {
@@ -19,20 +19,26 @@ exports.up = function (knex) {
     table.string('full_name_for_search').notNullable().index();
 
     // Basic fields
-    table.json('address').notNullable();
+    table.json('address').nullable();
     table.json('dob').notNullable();
-    table.enum('gender', ['male', 'female', 'others']).notNullable();
+    table.enum('gender', Object.values(gender)).nullable();
 
     // Aadhar
-    table.json('aadhar_number').notNullable();
-    table.string('aadhar_number_for_search').notNullable().index();
+    table.json('aadhar_number').nullable();
+    table.string('aadhar_number_for_search').nullable().index();
 
     // PAN
-    table.json('pan_number').notNullable();
-    table.string('pan_number_for_search').notNullable().index();
+    table.json('pan_number').nullable();
+    table.string('pan_number_for_search').nullable().index();
 
     // Role
     table.enum('role', Object.values(userRoles)).notNullable().defaultTo(userRoles.USER);
+
+    // Profile Image
+    table.string('profile_image_url').nullable();
+    table.string('profile_image_original_name').nullable();
+    table.string('profile_image_mime_type').nullable();
+    table.bigInteger('profile_image_size').nullable();
 
     // Timestamps
     table.timestamps(true, true);
