@@ -2,7 +2,7 @@ const knex = require('knex');
 const stringcase = require('knex-stringcase');
 const knexConfig = require('../../knexfile');
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.ENVIRONMENT || 'development';
 
 let db = null;
 

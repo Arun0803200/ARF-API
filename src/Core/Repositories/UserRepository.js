@@ -1,4 +1,4 @@
-const {User} = require('../Models/UserModel');
+const { User } = require('../Models/UserModel');
 
 class UserRepository {
   constructor(knex) {
@@ -64,4 +64,4 @@ class UserRepository {
   }
 }
 
-module.exports = {UserRepository};
+module.exports = { UserRepository };

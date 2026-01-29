@@ -7,7 +7,7 @@ const db = connectDB();
 const activityLogRepo = new ActivityLogRepository(db);
 
 class ActivityLogService {
-  async registerActivityLog(data) {
+  async create(data) {
     return await activityLogRepo.create(data);
   }
 

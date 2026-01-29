@@ -4,6 +4,8 @@ const express = require('express');
 const connectDB = require('./Config/Database');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const { eventLogMiddleware, errorHandler } = require('./Middlewares/EventLogMiddleware');
+const { sanitizeMiddleware } = require('./Middlewares/SanitizerMiddleware');
 
 const { router: userRoutes } = require('./Routes/UserRoutes');
 
@@ -20,7 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 // CORS setup
 app.use(cors({ origin: true, credentials: true }));
 
-app.use('/user', userRoutes);
+app.use(eventLogMiddleware);
+app.use(sanitizeMiddleware);
+
+app.use('/api/v1/user', userRoutes);
 
 // Health check / root
 app.get('/', (req, res) => {
@@ -28,6 +33,14 @@ app.get('/', (req, res) => {
     sts: 0,
     msg: 'API running successfully',
   });
+});
+
+app.use(errorHandler);
+
+app.use((req, res, next) => {
+  const error = new Error("Route not found");
+  error.status = 404;
+  next(error);
 });
 
 if (cluster.isPrimary) {
