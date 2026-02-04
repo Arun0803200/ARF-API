@@ -6,6 +6,8 @@ const sanitizeMiddleware = function sanitizeMiddleware(req, res, next) {
   const skipKeys = new Set([
     'password',
     'startTime',
+    'mimeType',
+    'path'
   ]);
 
   const invalidCharRegex = /[<>#%'"$^&*{}()[\]|\\/=;?`~]/;

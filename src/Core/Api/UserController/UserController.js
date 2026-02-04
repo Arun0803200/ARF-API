@@ -2,10 +2,10 @@ const { UserService } = require('../../Services/UserService');
 const { safeEncrypt, cryptoHashing, normalizeForSearch } = require('../../../Utils/CryptoJS');
 const { ActivityLogService } = require('../../Services/ActivityLogService');
 const { userRoles } = require('../../../Utils/Settings');
-
+const { User } = require('../../Models/UserModel')
 const userService = new UserService();
 const activityLogService = new ActivityLogService();
-
+const user = new User({});
 class UserController {
   // POST /users/register
   /**
@@ -19,6 +19,7 @@ class UserController {
    *
    * @apiBody {String} mobileNumber User's mobile number (required, must match /^[6-9]\d{9}$/)
    * @apiBody {String} fullName User's full name (required)
+   * @apiBody {String} fullNameNativeLang User's full name in native language (required)
    *
    * @apiBody {String} [address] User's address (optional, must not be empty if provided)
    *
@@ -63,6 +64,7 @@ class UserController {
       const {
         mobileNumber,
         fullName,
+        fullNameNativeLang,
         address,
         dob,
         gender,
@@ -74,10 +76,13 @@ class UserController {
         path,
       } = req.body;
 
+      const hashPass = await user.bcryptHashing(dob);
+
       const newUser = await userService.registerUser({
         mobileNumber: safeEncrypt(mobileNumber),
         mobileNumberForSearch: cryptoHashing(mobileNumber),
         fullName: safeEncrypt(fullName),
+        fullNameNativeLang: safeEncrypt(fullNameNativeLang),
         fullNameForSearch: normalizeForSearch(fullName),
         address: safeEncrypt(address),
         dob: safeEncrypt(dob),
@@ -91,6 +96,7 @@ class UserController {
         profileImageOriginalName: originalName,
         profileImageMimeType: mimeType,
         profileImageSize: size,
+        passwordHash: hashPass,
       });
 
       const responseData = {
@@ -113,6 +119,46 @@ class UserController {
     } catch (error) {
       console.log(error);
 
+      next(error);
+    }
+  }
+
+  async loginUser(req, res, next) {
+    try {
+      const { mobileNumber, password } = req.body;
+
+      const hashMobileNumber = cryptoHashing(mobileNumber);
+
+      const findUser = await userService.findOne({ mobileNumberForSearch: hashMobileNumber });
+
+      if (!findUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
+        });
+      }
+
+      const isPasswordValid = await user.bcryptCompare(dob, user.passwordHash);
+
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid credentials',
+        });
+      }
+
+      const accessToken = await user.createAccessToken(user.id, user.role);
+
+      return res.status(200).json({
+        success: true,
+        data: {
+          accessToken,
+          user,
+        },
+      });
+
+    } catch (error) {
+      console.error('Login User Error:', error);
       next(error);
     }
   }

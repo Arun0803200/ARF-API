@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 class User {
   constructor({
     id = null,
@@ -5,6 +8,7 @@ class User {
     mobileNumberForSearch = null,
     fullName = null,
     fullNameForSearch = null,
+    fullNameNativeLang = null,
     address = null,
     dob = null,
     gender = null,
@@ -15,6 +19,7 @@ class User {
     role = null,
     createdAt = null,
     updatedAt = null,
+    passwordHash = null,
   }) {
     this.id = id;
 
@@ -23,6 +28,7 @@ class User {
 
     this.fullName = fullName;
     this.fullNameForSearch = fullNameForSearch;
+    this.fullNameNativeLang = fullNameNativeLang;
 
     this.address = address;
     this.dob = dob;
@@ -38,7 +44,33 @@ class User {
 
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+
+    this.passwordHash = passwordHash;
+  }
+
+  // Hash password
+  async bcryptHashing(text) {
+    return await bcrypt.hash(text, 10);
+  }
+
+  // Compare password
+  async bcryptCompare(text, hashedText) {
+    return await bcrypt.compare(text, hashedText);
+  }
+
+  async createAccessToken(userId, role) {
+    const accessToken = jwt.sign({ userId, role }, process.env.ACCESS_TOKEN, {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRES + process.env.ACCESS_TOKEN_EXPIRES_TYPE,
+    });
+    return accessToken;
+  }
+
+  async createRefreshToken(userId, role) {
+    const refreshToken = jwt.sign({ userId, role }, process.env.REFRESH_TOKEN, {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRES + process.env.REFRESH_TOKEN_EXPIRES_TYPES,
+    });
+    return refreshToken;
   }
 }
 
-module.exports = {User};
+module.exports = { User };

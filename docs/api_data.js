@@ -280,6 +280,13 @@ define({ "api": [
       {
         "group": "Body",
         "type": "String",
+        "optional": false,
+        "field": "fullNameNativeLang",
+        "description": "<p>User's full name in native language (required)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
         "optional": true,
         "field": "address",
         "description": "<p>User's address (optional, must not be empty if provided)</p>"
@@ -324,6 +331,34 @@ define({ "api": [
         "optional": true,
         "field": "panNumber",
         "description": "<p>User's PAN number (optional, must match /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": false,
+        "field": "originalName",
+        "description": "<p>Profile image original file name, must not be empty</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": false,
+        "field": "mimeType",
+        "description": "<p>Profile image MIME type, must not be empty</p>"
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": false,
+        "field": "size",
+        "description": "<p>Profile image file size in bytes, must not be empty</p>"
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": false,
+        "field": "path",
+        "description": "<p>Profile image file path, must not be empty</p>"
       }
     ],
     "success": {
