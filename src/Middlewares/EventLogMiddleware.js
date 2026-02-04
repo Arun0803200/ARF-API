@@ -20,9 +20,7 @@ function extractPayload(req) {
     return payload;
 }
 
-const eventLogMiddleware = (req, res, next) => {
-    console.log(req.method, 'methoddddddd');
-    
+const eventLogMiddleware = (req, res, next) => {    
     const oldResJson = res.json;
     const startTime = Date.now();
     const parsedUrl = req._parsedUrl?.pathname.split('/') || [];

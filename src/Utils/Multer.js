@@ -26,9 +26,7 @@ const storage = multer.diskStorage({
     },
 });
 
-const fileFilter = (req, file, cb) => {
-    console.log(req.method, 'kkkkkkk');
-    
+const fileFilter = (req, file, cb) => {    
     if (!file.mimetype.startsWith("image/")) {
         return cb(
             new Error(toastMsg.onlyImagAllowed[req.headers['x-language'] || 'english']),

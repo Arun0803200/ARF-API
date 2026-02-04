@@ -40,8 +40,6 @@ class UploadController {
 
   upload(req, res, next) {
     try {
-      console.log('enterrrrrr');
-
       const result = imageService.uploadImage(req.file);
 
       return res.status(201).json({

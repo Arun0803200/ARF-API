@@ -15,6 +15,10 @@ class UserService {
   async getUser(id) {
     return await userRepo.findById(id);
   }
+
+  async findOne(data) {
+    return await userRepo.findOne(data);
+  }
 }
 
 module.exports = { UserService };

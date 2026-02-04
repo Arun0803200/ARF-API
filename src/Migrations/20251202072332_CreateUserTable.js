@@ -17,6 +17,7 @@ exports.up = function (knex) {
     // Full Name
     table.json('full_name').notNullable();
     table.string('full_name_for_search').notNullable().index();
+    table.json('full_name_native_lang').notNullable();
 
     // Basic fields
     table.json('address').nullable();
@@ -39,6 +40,9 @@ exports.up = function (knex) {
     table.string('profile_image_original_name').nullable();
     table.string('profile_image_mime_type').nullable();
     table.bigInteger('profile_image_size').nullable();
+
+    // Password
+    table.string('password_hash').notNullable().index();
 
     // Timestamps
     table.timestamps(true, true);
